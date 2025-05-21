@@ -40,6 +40,7 @@ const HomeContent = ({ navigation }) => {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState(''); // Thêm state cho ô tìm kiếm
 
   // Hàm gọi API lấy danh sách sản phẩm
   const fetchProduct = async () => {
@@ -89,6 +90,11 @@ const HomeContent = ({ navigation }) => {
     );
   }
 
+  // Lọc sản phẩm theo tên để tìm kiếm
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.header}>
@@ -108,7 +114,13 @@ const HomeContent = ({ navigation }) => {
             source={require('../assets/icon_search.png')}
             style={{ width: 20, height: 20, marginLeft: 30 }}
           />
-          <TextInput placeholder='Search Products or store' placeholderTextColor='#8891A5' style={{ marginLeft: 10, fontSize: 16, fontWeight: 500, color: 'white' }} />
+          <TextInput
+            placeholder='Search Products or store'
+            placeholderTextColor='#8891A5'
+            style={{ marginLeft: 10, fontSize: 16, fontWeight: 500, color: 'white' }}
+            value={searchText}
+            onChangeText={setSearchText} // Cập nhật giá trị tìm kiếm
+          />
         </View>
         <View style={styles.text}>
           <Text style={styles.text1}>DELIVERY TO</Text>
@@ -150,15 +162,17 @@ const HomeContent = ({ navigation }) => {
           Deals on Fruits & Tea
         </Text>
         <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
-          {products.map((product) => (
-            <Product
-              key={product.id}
-              image={product.image} // Sử dụng URL hình ảnh từ API
-              price={product.price}
-              name={product.name}
-              onPress={() => navigation.navigate('ProductDetails', { productId: product.id })} // Chuyển đến
-            />
-          ))}
+          <View style={{ flexWrap: 'wrap', flexDirection: 'row' }}>
+            {filteredProducts.map((product) => (
+              <Product
+                key={product.id}
+                image={product.image}
+                price={product.price}
+                name={product.name}
+                onPress={() => navigation.navigate('ProductDetails', { productId: product.id })}
+              />
+            ))}
+          </View>
         </View>
       </ScrollView>
     </View>

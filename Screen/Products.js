@@ -100,7 +100,7 @@ export default function Products({ navigation, route }) {
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" color="#2A4BA0" />
+        <ActivityIndicator size="large" color="#2A4BA0" /> //ActivityIndicator là một thành phần hiển thị vòng tròn quay để báo hiệu đang tải
         <Text>Loading products...</Text>
       </View>
     );
